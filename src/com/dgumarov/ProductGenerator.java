@@ -2,6 +2,7 @@ package com.dgumarov;
 
 import com.dgumarov.model.Product;
 
+import java.sql.*;
 import java.util.*;
 
 /**
@@ -42,6 +43,47 @@ public class ProductGenerator {
         }
 
         return  products;
+    }
+
+    public void generateDbProducts()
+    {
+        Connection connection;
+        Statement statement;
+
+        try {
+            Class.forName("org.sqlite.JDBC");
+            connection = DriverManager.getConnection("jdbc:sqlite:TEST.s3db");
+            statement = connection.createStatement();
+            statement.execute(createProductDb());
+
+            Iterator<String> iterator = productList.keySet().iterator();
+            int i = 0;
+
+            while (iterator.hasNext())
+            {
+                String key = iterator.next();
+
+                PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO products(name, price, quantity) VALUES(?,?,?)");
+                preparedStatement.setString(1, key);
+                preparedStatement.setInt(2, productList.get(key));
+                preparedStatement.setInt(3, randomRange(2, 10));
+                preparedStatement.execute();
+                i++;
+            }
+
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
+
+    }
+
+    private String createProductDb()
+    {
+        return "CREATE TABLE if not exists 'products' ('id' INTEGER PRIMARY KEY AUTOINCREMENT, 'name' text, 'price' INT, 'quantity' INT);";
     }
 
     private int randomRange(int min, int max)

@@ -9,11 +9,11 @@ import java.util.List;
 /**
  * Created by Dinar on 05.12.2016.
  */
-public class MemoryConsumerRepositoryImpl implements ProductRepository {
+public class MemoryProductRepositoryImpl implements ProductRepository {
 
     private List<Product> products = new ArrayList<>();
 
-    public MemoryConsumerRepositoryImpl() {
+    public MemoryProductRepositoryImpl() {
         ProductGenerator productGenerator = new ProductGenerator();
         products = productGenerator.generateInMemoryProductList();
     }

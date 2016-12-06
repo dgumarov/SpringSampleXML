@@ -9,4 +9,11 @@
         <!-- узнать, что лучше использовать index vs name -->
         <property name="repository" ref="consumerRepository" />
     </bean>
+
+    <bean name="productRepositoryInMemory" class="com.dgumarov.repository.MemoryProductRepositoryImpl" />
+    <bean name="productRepositoryInDb" class="com.dgumarov.repository.DbProductRepositoryImpl" />
+    <bean name="productService" class="com.dgumarov.service.ProductServiceImpl">
+        <!--<property name="productRepository" ref="productRepositoryInMemory" />-->
+        <property name="productRepository" ref="productRepositoryInDb" />
+    </bean>
 </beans>
